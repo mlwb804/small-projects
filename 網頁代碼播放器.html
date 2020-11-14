@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://ajax.aspnetcdn.com/ajax/jquery.ui/1.10.4/themes/hot-sneaks/jquery-ui.css">
+    <script src="../js/jquery-3.5.1.min.js"></script>
+    <script src="../jquery-ui-1.12.1/jquery-ui.min.js"></script>
+
+    <title>網頁代碼撥放器</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            list-style: none;
+        }
+        body{
+            overflow: hidden;
+        }
+        #menu {
+            width: 100%;
+            height: 60px;
+            background-color: black;
+
+        }
+
+        .menu-container {
+            width: 1200px;
+            margin: auto;
+            padding-top: 15px;
+        }
+
+        #logo {
+            color: #fff;
+            float: left;
+            font-size: 1.5em;
+            margin-left: 500px;
+            padding-left: 15px;
+        }
+
+        .button {
+            float: right;
+            font-size: 18px;
+            width: 120px;
+            border: none;
+            padding: 5px;
+            border-radius: 5px;
+            background-color: #ffdd40;
+
+            cursor: pointer;
+            transition: all .5s;
+        }
+
+        .button span {
+
+            transition: .5s;
+        }
+
+        .button span::after {
+            content: "\00bb";
+            /* color: white; */
+            position: absolute;
+            opacity: 0;
+            right: 0;
+            transition: .5s;
+        }
+
+        .button:hover span{
+            position: relative;
+            padding-right: 25px;
+        }
+
+        .button:hover span::after {
+
+            opacity: 1;
+            right: 0;
+        }
+
+        .clear {
+            clear: both;
+        }
+
+        #accordion{
+            background-color: #ffdd40;
+            width: 100%;
+            height: 400px;
+            margin: auto;
+
+            overflow: hidden;
+        }
+        
+        #accordion h3, #accordion div{
+            
+            display: inline-block;
+            text-align: center;
+            vertical-align: top;
+        }
+
+        #accordion h3{
+            background-color: #36383f;
+            color:#fff;
+            transform: rotate(270deg);
+            
+            width: 400px;
+            height: 30px;
+
+            margin: 185px 0 -170px;
+        }
+
+        #accordion div {
+
+            width: 250px;
+            height: 400px;
+
+            margin: 0 5px 0 -170px;
+        }
+
+        textarea {
+            width: 100%;
+            height: inherit;
+            resize: none;
+            background-color: inherit;
+            border: none;
+
+            color:#ddca7e;
+            font-size: 20px;
+        }
+
+        #result-container{
+            background-color: #1d1e22;
+            width: 100%;
+        }
+
+        h2{
+            width: 100%;
+            height: 30px;
+            background-color: #36383f;
+            color:white;
+            text-align: center;
+            font-weight: normal;
+        }
+
+        iframe {
+            border: none;
+            width: 100%;
+            background-color: #fff;
+        }
+
+        .footer{
+            background-color: #36383f;
+            width: 100%;
+            height: 40px;
+            position: fixed;
+            bottom: 0;
+            left: 0;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div id="menu">
+        <div class="menu-container">
+
+            <div id="logo">
+                網頁代碼播放器
+            </div>
+
+            <button type="button" name="button" id="runCode" class="button"><span>運行代碼</span></button>
+        </div>
+    </div>
+
+    <div class="clear"></div>
+
+    <ul id="accordion">
+        <h3 id="html-code" class="tab">HTML</h3>
+        <div class="code-container">
+            <textarea id="html-code">
+
+            </textarea>
+        </div>
+
+        <h3 id="css-code" class="tab">CSS</h3>
+        <div class="code-container">
+            <textarea id="css-code">
+
+            </textarea>
+        </div>
+
+        <h3 id="js-code" class="tab">JavaScript</h3>
+        <div class="code-container">
+            <textarea id="js-code">
+
+            </textarea>
+        </div>
+    </ul>
+  
+    <div class="clear"></div>
+
+    <div id="result-container">
+
+        <h2>結 果</h2>
+        <iframe id="result-frame"></iframe>
+    </div>
+  
+  <div class="footer"></div>
+  
+  
+  
+  <script type="text/javascript">
+
+  $(document).ready(function () {
+
+    $(".code-container").hide();
+    $("#css-code").css("margin-left", "-350px");
+    $("#js-code").css("margin-left", "-350px");
+
+    var $result = $("#result-frame");
+    var $window = $(window).on("resize", function() {
+
+        var height = $(this).height() - 530;
+        $result.height(height);
+
+    }).trigger("resize");
+
+    $(".tab").click(function (event) {
+
+        $(this).nextAll(".tab").css("margin-left", "-170px")
+        $(this).nextAll(".code-container").animate(
+            {width: "0px"},
+            {duration: 1500, queue: false}
+
+
+        );
+
+        $(this).next().animate({
+            backgroundColor: "#1d1e22",
+        });
+
+        var leftOffset = $(this).offset().left;
+
+        if (leftOffset > 680) {
+
+        // $(this).prevAll(".tab").css("margin-left", "-170px");
+        
+        $(this).prevAll(".tab").animate({
+
+            marginLeft:"-170px",
+        }, {duration:700, queue: false}
+        );
+
+        $(this).next().animate({
+
+            width: "680px",
+
+        }, { duration: 2000, queue: false });
+
+        $(this).prevAll(".code-container").animate(
+
+            {
+                width: "0px",
+            },
+            {
+                duration: 1000, queue: false
+            }
+        );
+
+        } else {
+
+        $(this).next().animate ({
+
+            width: "680px",
+
+        },{duration: 2000, queue: false});
+
+        };
+
+    });
+
+
+
+    $("#runCode").click(function () {
+
+       
+        $("#result-frame").contents().find("head").html("<style>" + $("textarea#css-code").val() + "</style>");
+        $("#result-frame").contents().find("body").html($("textarea#html-code").val());
+
+        document.getElementById('result-frame').contentWindow.eval($("textarea#js-code").val());
+
+
+
+        
+
+
+
+
+
+
+
+
+
+
+
+    });
+
+
+
+
+
+
+
+
+
+
+
+  });
+    
+
+
+
+
+    </script>
+</body>
+
+</html>
