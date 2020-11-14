@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="../js/jquery-3.5.1.min.js"></script>
+    <title>Document</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            list-style: none;
+        }
+
+        body {
+            background-color: #f2f3f5;
+        }
+
+        #container {
+            width: 600px;
+            margin: auto;
+            font-family: "Helvetica Neue", "Helvetica";
+            padding-top: 60px;
+        }
+
+        .input-style {
+            border-radius: 5px;
+            border:1px solid #ccc;
+            font-size: 1.1em;
+            padding-left: 20px;
+            margin-bottom: 10px;
+        }
+
+        .input-width {
+            width: 300px;
+            height: 40px;
+        }
+        label{
+            width: 200px;
+            float: left;
+            font-size: 1.2em;
+            padding-top: 8px;
+        }
+
+        #mail-gender{
+            width: 323px;
+        }
+
+        #mail-message {
+            width: 500px;
+        }
+        
+        #submitButton {
+            background-color: #aa47bc;
+            color:#000;
+            width: 523px;
+            height: 40px;
+            text-align: center;
+        }
+
+        #error{
+            color:red;
+        }
+
+
+
+    </style>
+
+
+</head>
+
+<body>
+
+
+    <div id="container">
+
+        <form id="validationForm">
+            <label for="email-name">姓 名:</label>
+            <input type="text" name="name" id="email-name" placeholder="請輸入姓名" class="input-width input-style">
+
+
+            <label for="email-address">電子郵件:</label>
+            <input type="text" name="email" id="email-address" placeholder="請輸入信箱" class="input-width input-style">
+
+            <label for="mail-gender">性 別:</label>
+            <select name="gender" id="mail-gender" class="input-style">
+            <option value="male">男性</option>
+            <option value="female">女性</option>
+            </select>
+
+            <label for="pass1">密 碼:</label>
+            <input type="password" name="pass1" id="pass1" placeholder="密 碼" class="input-width input-style">
+
+            <label for="pass2">確認密碼:</label>
+            <input type="password" id="pass2" name="pass2" placeholder="確認密碼" class="input-width input-style">
+
+            <textarea name="message" class="input-style" id="mail-message" cols="60" rows="10"
+                placeholder="請描述你的狀況"></textarea>
+
+            <button class="input-width input-style" id="submitButton" type="submit" name="submit">發送郵件</button>
+
+            
+        </form>
+
+        <div id="error"></div>
+
+    </div>
+
+
+
+
+
+
+
+
+
+    <script type="text/javascript">
+    
+
+
+    $("#validationForm").submit(function (event) {
+
+        var errorMessage = "";
+
+        event.preventDefault();
+
+        var name = $("#email-name").val();
+        var email = $("#email-address").val();
+        var pass1 = $("#pass1").val();
+        var pass2 = $("#pass2").val();
+        var message = $("#mail-message").val();
+
+        function isValidEmailAddress(emailAddress){
+
+            var pattern = /^\b[A-Z0-9-]+@[A-Z0-9]+\.com\b/i;
+
+            return pattern.test(emailAddress)
+
+        }
+
+        if (name == "" || email == "" || pass1 == "" || pass2 == "" || message == ""){
+
+            errorMessage = "請輸入完整訊息.";
+        } else if (!isValidEmailAddress(email)) {
+
+            errorMessage = "請輸入正確格式";
+
+        } else if (pass1 != pass2) {
+
+            errorMessage = "密碼錯誤";
+
+        }
+
+        if (errorMessage == "") {
+
+            $("#error").html("郵件已傳出");
+            $("#error").css("color", "green");
+
+        } else {
+
+            $("#error").html(errorMessage);
+            $("#error").css("color", "red");
+
+        }
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    });
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    </script>
+</body>
+
+</html>
